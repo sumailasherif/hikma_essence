@@ -207,8 +207,11 @@ function initAccordion() {
     const btn = e.target.closest('.acc-btn');
     if (!btn) return;
     const open = btn.getAttribute('aria-expanded') === 'true';
-    $$('.acc-btn', root).forEach((b) => b.setAttribute('aria-expanded', 'false'));
-    btn.setAttribute('aria-expanded', String(!open));
+    $$('.acc-item', root).forEach((item) => {
+      const isTarget = item.contains(btn) && !open;
+      item.classList.toggle('is-open', isTarget);
+      $('.acc-btn', item).setAttribute('aria-expanded', String(isTarget));
+    });
   });
 }
 
