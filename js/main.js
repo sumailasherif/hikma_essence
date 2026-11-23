@@ -1,5 +1,5 @@
-import { CONTACT, PRODUCTS, SPRAYS, FAQS } from './data.js';
-import { bottleSVG, bottleDiagram } from './bottle.js';
+import { CONTACT, PRODUCTS, SPRAYS, COLLECTION, FAQS } from './data.js';
+import { bottleSVG } from './bottle.js';
 
 document.documentElement.classList.add('js');
 
@@ -122,9 +122,22 @@ function initFinder() {
   const render = () => {
     const { product, match } = bestMatch(state.mood, state.occasion);
     visual.innerHTML = `
-      <p class="finder-house">${product.house || 'Hikمa Essence'}</p>
-      <p class="finder-name">${product.name}</p>
-      ${bottleDiagram(product)}`;
+      <figure class="finder-photo">
+        <img src="${product.image}" alt="${product.name}${product.house ? ` by ${product.house}` : ''}" width="600" height="600" />
+      </figure>
+      <div class="finder-info">
+        <p class="finder-house">${product.house || 'Hikمa Essence'}</p>
+        <p class="finder-name">${product.name}</p>
+        <dl class="finder-notes">
+          ${[
+            ['Top', product.notes.top, 'gold'],
+            ['Heart', product.notes.heart, 'pink'],
+            ['Base', product.notes.base, 'gold'],
+          ]
+            .map(([label, notes, tone]) => `<div><dt class="${tone}">${label}</dt><dd>${notes.join(' · ')}</dd></div>`)
+            .join('')}
+        </dl>
+      </div>`;
     tiles.innerHTML = [
       ['Match', `${match}<small>%</small>`, 'gold'],
       ['Family', product.family, ''],
@@ -187,62 +200,48 @@ function initCollection() {
   );
 }
 
-/* ---------- Spray collection: search + A–Z filter ---------- */
+/* ---------- Collection: moving photo rails + full stock list ---------- */
 
 const sortedSprays = () => [...SPRAYS].sort((a, b) => a.localeCompare(b));
-const firstChar = (name) => (/^[a-z]/i.test(name) ? name[0].toUpperCase() : '#');
+const orderSpray = (name) => `Hi Hikma Essence! I'd like to order the ${name} spray.`;
 
 function initSprays() {
-  const grid = $('[data-spray-grid]');
-  const search = $('[data-spray-search]');
-  const lettersEl = $('[data-spray-letters]');
-  const empty = $('[data-spray-empty]');
   const names = sortedSprays();
-  const state = { query: '', letter: 'All' };
+  const rail = $('[data-rail]');
+  const toggle = $('[data-rail-toggle]');
+  const list = $('[data-spray-list]');
 
   $$('[data-spray-total]').forEach((el) => (el.textContent = names.length));
   $$('[data-count-total]').forEach((el) => (el.dataset.count = names.length + PRODUCTS.length));
 
-  grid.innerHTML = names
-    .map(
-      (name, i) => `
-      <li class="spray" data-name="${name.toLowerCase()}" data-letter="${firstChar(name)}">
-        <a href="${whatsappLink(`Hi Hikma Essence! I'd like to order the ${name} spray.`)}" target="_blank" rel="noopener">
-          <span class="spray-num">${String(i + 1).padStart(2, '0')}</span>
-          <span class="spray-name">${name}</span>
-          <span class="spray-cta">DM <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow" /></svg></span>
-        </a>
-      </li>`,
-    )
-    .join('');
+  const railCard = ({ name, house, image }) => `
+    <li class="rail-card">
+      <a class="rail-link" href="${whatsappLink(`Hi Hikma Essence! I'd like to order ${name}${house ? ` by ${house}` : ''}.`)}" target="_blank" rel="noopener">
+        <span class="rail-photo">
+          <img src="${image}" alt="${name}${house ? ` by ${house}` : ''}" width="600" height="600" loading="lazy" />
+        </span>
+        <span class="rail-meta"><strong>${name}</strong><small>${house}</small></span>
+        <span class="rail-dm">DM <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow" /></svg></span>
+      </a>
+    </li>`;
 
-  const letters = ['All', ...new Set(names.map(firstChar))];
-  lettersEl.innerHTML = letters
-    .map((l) => `<button type="button" data-letter="${l}" aria-pressed="${l === 'All'}">${l}</button>`)
-    .join('');
-
-  const apply = () => {
-    let shown = 0;
-    $$('.spray', grid).forEach((li) => {
-      const ok =
-        li.dataset.name.includes(state.query) && (state.letter === 'All' || li.dataset.letter === state.letter);
-      li.hidden = !ok;
-      shown += ok;
-    });
-    empty.hidden = shown > 0;
-  };
-
-  search.addEventListener('input', () => {
-    state.query = search.value.trim().toLowerCase();
-    apply();
+  // Two rows, split alternately. Each row is duplicated once so the loop is seamless.
+  [COLLECTION.filter((_, i) => i % 2 === 0), COLLECTION.filter((_, i) => i % 2 === 1)].forEach((items, row) => {
+    const markup = items.map(railCard).join('');
+    $(`[data-rail-track="${row}"]`).innerHTML =
+      `<ul class="rail-set">${markup}</ul><ul class="rail-set" aria-hidden="true" inert>${markup}</ul>`;
   });
-  lettersEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('button');
-    if (!btn) return;
-    state.letter = btn.dataset.letter;
-    $$('button', lettersEl).forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-    apply();
+
+  toggle.addEventListener('click', () => {
+    const paused = rail.classList.toggle('is-paused');
+    toggle.setAttribute('aria-pressed', String(paused));
+    $('use', toggle).setAttribute('href', paused ? '#icon-play' : '#icon-pause');
+    $('span', toggle).textContent = paused ? 'Play' : 'Pause';
   });
+
+  list.innerHTML = names
+    .map((name) => `<li><a href="${whatsappLink(orderSpray(name))}" target="_blank" rel="noopener">${name}</a></li>`)
+    .join('');
 }
 
 /* ---------- FAQ accordion ---------- */

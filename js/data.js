@@ -35,6 +35,7 @@ export const PRODUCTS = [
       base: ['Vanilla', 'Patchouli', 'Cedar'],
     },
     bottle: { glass: '#5a2a3c', liquid: '#2a1520', cap: '#121014', label: '#e0607e', shape: 'round', sparkle: true },
+    image: 'assets/products/black-opium.png',
   },
   {
     id: 'ameerat-al-arab',
@@ -51,6 +52,7 @@ export const PRODUCTS = [
       base: ['Vanilla', 'Amber', 'Musk'],
     },
     bottle: { glass: '#7a1328', liquid: '#5c0d1e', cap: 'gold', label: '#d9aa4f', shape: 'square' },
+    image: 'assets/products/ameerat-al-arab.jpg',
   },
   {
     id: 'asad-zanzibar',
@@ -67,23 +69,23 @@ export const PRODUCTS = [
       base: ['Vanilla', 'Amber', 'Dry woods'],
     },
     bottle: { glass: '#1f2f5c', liquid: '#18244a', cap: 'silver', label: '#c9ced8', shape: 'tall' },
+    image: 'assets/products/asad-zanzibar.jpg',
   },
   {
-    id: 'gold-elixir',
-    name: 'Gold Elixir',
-    house: '', // TODO: add the perfume house / brand
-
-    family: 'Amber · Musk',
-    description: 'Golden, glowing and soft. A warm amber-musk that feels like a second skin.',
-    mood: ['warm', 'elegant', 'fresh'],
-    occasion: ['everyday', 'work', 'event'],
+    id: 'khamrah',
+    name: 'Khamrah',
+    house: 'Lattafa',
+    family: 'Spicy · Gourmand',
+    description: 'Cinnamon, dates and praline over warm vanilla and tonka. Golden, spiced comfort that lingers for hours.',
+    mood: ['warm', 'elegant'],
+    occasion: ['date', 'event', 'everyday'],
     notes: {
-      // TODO: confirm notes with supplier
-      top: ['Saffron', 'Bergamot'],
-      heart: ['Rose', 'Honey'],
-      base: ['Amber', 'Musk', 'Oud'],
+      top: ['Cinnamon', 'Nutmeg', 'Bergamot'],
+      heart: ['Dates', 'Praline', 'Tuberose'],
+      base: ['Vanilla', 'Tonka bean', 'Amberwood'],
     },
-    bottle: { glass: '#e9b955', liquid: '#d79a2b', cap: 'gold', label: '#fff8ec', shape: 'classic' },
+    bottle: { glass: '#e9b955', liquid: '#b9772b', cap: 'gold', label: '#fff8ec', shape: 'classic' },
+    image: 'assets/products/khamrah.png',
   },
 ];
 
@@ -136,6 +138,29 @@ export const SPRAYS = [
   'Fiero',
   'Vanilla Bouquet',
   'Rose Seduction',
+];
+
+/**
+ * Photo strip shown in the "Collection" section.
+ * Add a real product photo to assets/products/ and list it here.
+ */
+export const COLLECTION = [
+  { name: 'Khamrah', house: 'Lattafa', image: 'assets/products/khamrah.png' },
+  { name: 'Khamrah Qahwa', house: 'Lattafa', image: 'assets/products/khamrah-qahwa.png' },
+  { name: 'Yara', house: 'Lattafa', image: 'assets/products/yara.png' },
+  { name: 'Yara Candy', house: 'Lattafa', image: 'assets/products/yara-candy.png' },
+  { name: 'Yara Moi', house: 'Lattafa', image: 'assets/products/yara-moi.png' },
+  { name: 'Yara Tous', house: 'Lattafa', image: 'assets/products/yara-tous.png' },
+  { name: 'Asad Elixir', house: 'Lattafa', image: 'assets/products/asad-elixir.png' },
+  { name: 'Asad Zanzibar', house: 'Lattafa', image: 'assets/products/asad-zanzibar.jpg' },
+  { name: 'Ameerat Al Arab', house: 'Asdaaf', image: 'assets/products/ameerat-al-arab.jpg' },
+  { name: 'Ameerat Al Arab Sugar Crown', house: 'Asdaaf', image: 'assets/products/ameerat-sugar-crown.png' },
+  { name: 'Oud Mood', house: 'Lattafa', image: 'assets/products/oud-mood.png' },
+  { name: 'Velvet Oud', house: 'Lattafa', image: 'assets/products/velvet-oud.png' },
+  { name: 'Raed Oud', house: 'Lattafa', image: 'assets/products/raed-oud.png' },
+  { name: 'Ameer Al Oudh', house: 'Lattafa', image: 'assets/products/ameer-al-oudh.png' },
+  { name: 'Eternal Oud', house: 'Lattafa', image: 'assets/products/eternal-oud.png' },
+  { name: 'Black Opium', house: 'Yves Saint Laurent', image: 'assets/products/black-opium.png' },
 ];
 
 export const FAQS = [

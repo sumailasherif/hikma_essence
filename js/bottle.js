@@ -88,35 +88,10 @@ export function bottleMarkup(product) {
   `;
 }
 
-/** Standalone bottle SVG (collection cards). */
+/** Standalone bottle SVG (fallback when a product has no photo). */
 export function bottleSVG(product, className = '') {
   if (product.image) {
     return `<img class="${className}" src="${product.image}" alt="${product.name} bottle" loading="lazy" />`;
   }
   return `<svg class="${className}" viewBox="0 0 200 280" role="img" aria-label="${product.name} bottle">${bottleMarkup(product)}</svg>`;
-}
-
-/** Bottle with dotted leader lines to its note pyramid (scent finder). */
-export function bottleDiagram(product) {
-  const rows = [
-    { label: 'Top notes', notes: product.notes.top, y: 64, dot: '#ecc977' },
-    { label: 'Heart notes', notes: product.notes.heart, y: 160, dot: '#f2a7b8' },
-    { label: 'Base notes', notes: product.notes.base, y: 238, dot: '#d9aa4f' },
-  ];
-
-  const leaders = rows.map(({ label, notes, y, dot }) => `
-    <line x1="176" y1="${y}" x2="248" y2="${y}" stroke="${dot}" stroke-opacity=".7" stroke-dasharray="3 5"/>
-    <circle cx="176" cy="${y}" r="6" fill="${dot}" stroke="#160b0f" stroke-width="2"/>
-    <text x="258" y="${y - 6}" font-family="Sora, sans-serif" font-size="10" letter-spacing="1.6" fill="${dot}">${label.toUpperCase()}</text>
-    <text x="258" y="${y + 12}" font-family="Sora, sans-serif" font-size="13" fill="#fdf3f2">${notes.slice(0, 2).join(' · ')}</text>
-    ${notes[2] ? `<text x="258" y="${y + 29}" font-family="Sora, sans-serif" font-size="13" fill="#fdf3f2" opacity=".7">${notes[2]}</text>` : ''}
-  `).join('');
-
-  return `
-    <svg viewBox="0 0 440 290" role="img" aria-label="${product.name}: top notes ${product.notes.top.join(', ')}; heart notes ${product.notes.heart.join(', ')}; base notes ${product.notes.base.join(', ')}">
-      <circle cx="100" cy="150" r="120" fill="#d9aa4f" opacity=".07"/>
-      <svg x="0" y="4" width="200" height="280" viewBox="0 0 200 280">${bottleMarkup(product)}</svg>
-      <line x1="10" y1="276" x2="430" y2="276" stroke="#fdf3f2" stroke-opacity=".12"/>
-      ${leaders}
-    </svg>`;
 }
