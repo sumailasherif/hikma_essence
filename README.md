@@ -25,7 +25,8 @@ Everything that changes often is in [`js/data.js`](js/data.js):
 | What | Where |
 | --- | --- |
 | WhatsApp number, Snapchat handle | `CONTACT` |
-| Products (name, house, notes, mood, occasion, colours) | `PRODUCTS` |
+| Signature products (name, house, notes, mood, occasion, colours) | `PRODUCTS` |
+| Spray collection (one name per line, shown A–Z automatically) | `SPRAYS` |
 | FAQ questions and answers | `FAQS` |
 
 **Product photos:** add a photo to `assets/products/` and set `image: 'assets/products/your-file.webp'` on the product. Without one, the site draws an illustrated bottle in the product's colours.

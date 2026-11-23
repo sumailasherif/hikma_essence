@@ -1,4 +1,4 @@
-import { CONTACT, PRODUCTS, FAQS } from './data.js';
+import { CONTACT, PRODUCTS, SPRAYS, FAQS } from './data.js';
 import { bottleSVG, bottleDiagram } from './bottle.js';
 
 document.documentElement.classList.add('js');
@@ -180,7 +180,69 @@ function initCollection() {
   ).join('');
 
   const select = $('[data-scent-select]');
-  select.insertAdjacentHTML('beforeend', PRODUCTS.map((p) => `<option>${p.name}</option>`).join(''));
+  select.insertAdjacentHTML(
+    'beforeend',
+    `<optgroup label="Signature">${PRODUCTS.map((p) => `<option>${p.name}</option>`).join('')}</optgroup>
+     <optgroup label="Sprays">${sortedSprays().map((n) => `<option>${n}</option>`).join('')}</optgroup>`,
+  );
+}
+
+/* ---------- Spray collection: search + A–Z filter ---------- */
+
+const sortedSprays = () => [...SPRAYS].sort((a, b) => a.localeCompare(b));
+const firstChar = (name) => (/^[a-z]/i.test(name) ? name[0].toUpperCase() : '#');
+
+function initSprays() {
+  const grid = $('[data-spray-grid]');
+  const search = $('[data-spray-search]');
+  const lettersEl = $('[data-spray-letters]');
+  const empty = $('[data-spray-empty]');
+  const names = sortedSprays();
+  const state = { query: '', letter: 'All' };
+
+  $$('[data-spray-total]').forEach((el) => (el.textContent = names.length));
+  $$('[data-count-total]').forEach((el) => (el.dataset.count = names.length + PRODUCTS.length));
+
+  grid.innerHTML = names
+    .map(
+      (name, i) => `
+      <li class="spray" data-name="${name.toLowerCase()}" data-letter="${firstChar(name)}">
+        <a href="${whatsappLink(`Hi Hikma Essence! I'd like to order the ${name} spray.`)}" target="_blank" rel="noopener">
+          <span class="spray-num">${String(i + 1).padStart(2, '0')}</span>
+          <span class="spray-name">${name}</span>
+          <span class="spray-cta">DM <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow" /></svg></span>
+        </a>
+      </li>`,
+    )
+    .join('');
+
+  const letters = ['All', ...new Set(names.map(firstChar))];
+  lettersEl.innerHTML = letters
+    .map((l) => `<button type="button" data-letter="${l}" aria-pressed="${l === 'All'}">${l}</button>`)
+    .join('');
+
+  const apply = () => {
+    let shown = 0;
+    $$('.spray', grid).forEach((li) => {
+      const ok =
+        li.dataset.name.includes(state.query) && (state.letter === 'All' || li.dataset.letter === state.letter);
+      li.hidden = !ok;
+      shown += ok;
+    });
+    empty.hidden = shown > 0;
+  };
+
+  search.addEventListener('input', () => {
+    state.query = search.value.trim().toLowerCase();
+    apply();
+  });
+  lettersEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    state.letter = btn.dataset.letter;
+    $$('button', lettersEl).forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    apply();
+  });
 }
 
 /* ---------- FAQ accordion ---------- */
@@ -247,6 +309,7 @@ initContactLinks();
 initHeader();
 initFinder();
 initCollection();
+initSprays();
 initAccordion();
 initContactForm();
 initReveal(); // last, so generated cards are observed too

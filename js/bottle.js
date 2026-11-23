@@ -35,7 +35,7 @@ function labelText(name, cx, cy, color) {
   const lines = words.length > 2 ? [words.slice(0, 1).join(' '), words.slice(1).join(' ')] : words.length === 2 ? words : [name];
   const ink = isLight(color) ? '#2a1a12' : '#fff';
   const start = cy - ((lines.length - 1) * 13) / 2 + 4;
-  return `<text x="${cx}" text-anchor="middle" font-family="Bodoni Moda, serif" font-style="italic" font-size="13" fill="${ink}">
+  return `<text x="${cx}" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="${ink}">
     ${lines.map((l, i) => `<tspan x="${cx}" y="${start + i * 14}">${l}</tspan>`).join('')}
   </text>`;
 }

@@ -87,6 +87,57 @@ export const PRODUCTS = [
   },
 ];
 
+/**
+ * Spray collection: one name per line, shown A–Z on the site.
+ * To add a spray, add its name here. To remove one, delete the line.
+ */
+export const SPRAYS = [
+  'Sharaf Blend',
+  'Shamoki',
+  'Oud Noir',
+  'Qaed Al-Fursan',
+  'Luree',
+  'Elysia',
+  'After 12',
+  'Hayati',
+  'Explore',
+  'Night Club',
+  'Oud Madness',
+  'Pegasus',
+  'Brown Orchid',
+  'Scandant by Night',
+  'Bad Lad',
+  'Cheek',
+  'Extremely Unique',
+  'Berries Weekend',
+  'Invicto',
+  'Golden Night',
+  'Magie',
+  'Noir',
+  'Sauve',
+  'Ophylia',
+  'Dolores',
+  'Ur Way',
+  'Monarch',
+  'Suspenso',
+  'Aventos',
+  'Toomford',
+  'Aventure',
+  'Intense Man',
+  'Barakkat Lattafa Oud',
+  'Oniro',
+  'Black Leather',
+  'Lavie Bell',
+  'Proud of You',
+  'Amor',
+  'Instant Love',
+  'Vanilla Petals',
+  'Because I Am With You',
+  'Fiero',
+  'Vanilla Bouquet',
+  'Rose Seduction',
+];
+
 export const FAQS = [
   {
     q: 'How do I place an order?',
